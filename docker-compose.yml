@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  db:
+    container_name: db
+    image: mongo:4.4.19-rc2
+    command: "--auth"
+    volumes:
+      - type: volume
+        source: db-volume
+        target: /data/db
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    networks:
+      - net
+  node:
+    container_name: node
+    image: node:19-alpine3.16
+    volumes:
+      - type: volume
+        source: node-volume
+        target: /app
+    entrypoint: sh
+    networks:
+      - net
+
+volumes:
+  db-volume:
+    name: db-volume
+    driver: local
+    driver_opts:
+      device: ${PWD}/db
+      type: none
+      o: bind
+
+  node-volume:
+    name: node-volume
+    driver: local
+    driver_opts:
+      device: ${PWD}/node
+      type: none
+      o: bind
+
+networks:
+  net:
+    name: internal
+    driver: bridge
