@@ -15,14 +15,20 @@ services:
       - .env
     networks:
       - net
-  node:
-    container_name: node
-    image: node:19-alpine3.16
+
+  express:
+    container_name: express
+    build:
+      context: ./
+      dockerfile: express.Dockerfile
     volumes:
       - type: volume
-        source: node-volume
+        source: express-volume
         target: /app
-    entrypoint: sh
+    ports:
+      - "3000:3000"
+    working_dir: '/app'
+    entrypoint: sh /tmp/express.entry.sh;
     networks:
       - net
 
@@ -35,11 +41,11 @@ volumes:
       type: none
       o: bind
 
-  node-volume:
-    name: node-volume
+  express-volume:
+    name: express-volume
     driver: local
     driver_opts:
-      device: ${PWD}/node
+      device: ${PWD}/express
       type: none
       o: bind
 
