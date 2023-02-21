@@ -1,23 +1,38 @@
+import { PrismaClient } from '@prisma/client';
 import express from 'express';
-import { MongoClient } from 'mongodb';
 
-const uri = 'mongodb://jaham:0214@db:27017/testdb';
-
-const client = new MongoClient(uri);
+const prisma = new PrismaClient();
 
 const app = express();
 const port = 3000;
 
 app.get('/', async (req, res) => {
-  await client.connect();
+  await prisma.$connect();
 
-  const object = await client
-    .db('testdb')
-    .collection('test_coll')
-    .find()
-    .next();
+  await prisma.user.create({
+    data: {
+      name: 'Rich',
+      email: 'hello@prisma.com',
+      posts: {
+        create: {
+          title: 'My first post',
+          body: 'Lots of really interesting stuff',
+          slug: 'my-first-post',
+        },
+      },
+    },
+  });
 
-  res.send(object);
+  const allUsers = await prisma.user.findMany({
+    include: {
+      posts: true,
+    },
+  });
+  console.dir(allUsers, { depth: null });
+
+  await prisma.$disconnect();
+
+  res.send('hi');
 });
 
 app.listen(port, () => {
