@@ -1,36 +1,14 @@
-import { PrismaClient } from '@prisma/client';
 import express from 'express';
-
-const prisma = new PrismaClient();
+import { MongoClient } from 'mongodb';
 
 const app = express();
 const port = 3000;
 
+const mongo = new MongoClient('mongodb://jaham:0214@db/testdb');
+
 app.get('/', async (req, res) => {
-  await prisma.$connect();
-
-  await prisma.user.create({
-    data: {
-      name: 'Rich',
-      email: 'hello@prisma.com',
-      posts: {
-        create: {
-          title: 'My first post',
-          body: 'Lots of really interesting stuff',
-          slug: 'my-first-post',
-        },
-      },
-    },
-  });
-
-  const allUsers = await prisma.user.findMany({
-    include: {
-      posts: true,
-    },
-  });
-  console.dir(allUsers, { depth: null });
-
-  await prisma.$disconnect();
+  mongo.db().dropCollection('user');
+  mongo.db().dropCollection('users');
 
   res.send('hi');
 });
