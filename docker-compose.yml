@@ -16,19 +16,17 @@ services:
     networks:
       - net
 
-  express:
-    container_name: express
-    build:
-      context: ./
-      dockerfile: express.Dockerfile
+  backend:
+    container_name: backend
+    image: node:19-alpine3.16
     volumes:
       - type: volume
-        source: express-volume
+        source: backend-volume
         target: /app
     ports:
       - "3000:3000"
     working_dir: '/app'
-    entrypoint: sh /tmp/express.entry.sh;
+    entrypoint: npm run start:dev
     networks:
       - net
 
@@ -41,11 +39,11 @@ volumes:
       type: none
       o: bind
 
-  express-volume:
-    name: express-volume
+  backend-volume:
+    name: backend-volume
     driver: local
     driver_opts:
-      device: ${PWD}/express
+      device: ${PWD}/backend
       type: none
       o: bind
 
