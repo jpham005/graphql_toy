@@ -1,11 +1,13 @@
 import { YogaDriver, YogaDriverConfig } from '@graphql-yoga/nestjs';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AuthorsModule } from './authors/authros.module';
 
 @Module({
   imports: [
+    MongooseModule.forRoot('mongodb://jaham:0214@db/testdb'),
     AuthorsModule,
     GraphQLModule.forRoot<YogaDriverConfig>({
       driver: YogaDriver,
