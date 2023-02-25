@@ -1,10 +1,11 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import mongoose from 'mongoose';
 import { Post } from 'src/post/models/post.model';
 
 @ObjectType()
 export class Author {
-  @Field((type) => Int)
-  id: number;
+  @Field((type) => String)
+  id: mongoose.Schema.Types.ObjectId;
 
   @Field({ nullable: true })
   firstName?: string;
@@ -13,5 +14,5 @@ export class Author {
   lastName?: string;
 
   @Field((type) => [Post], { nullable: 'items' })
-  posts: Post[];
+  post: Post[];
 }

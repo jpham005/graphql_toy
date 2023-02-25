@@ -1,14 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Post } from 'src/post/models/post.model';
+import { Post } from 'src/post/database/schemas/post.database.schema';
 
 export type AuthorDocument = HydratedDocument<Author>;
 
 @Schema()
 export class Author {
-  @Prop({ required: true })
-  id: number;
-
   @Prop({ required: true })
   firstName: string;
 
@@ -16,7 +13,7 @@ export class Author {
   lastName: string;
 
   @Prop({
-    type: [{ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] }],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     required: true,
   })
   post: Post[];

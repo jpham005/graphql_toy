@@ -7,7 +7,7 @@ import { AuthorsModule } from './authors/authros.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://jaham:0214@db/testdb'),
+    MongooseModule.forRoot('mongodb://42stat:0214@db/42stat'),
     AuthorsModule,
     GraphQLModule.forRoot<YogaDriverConfig>({
       driver: YogaDriver,

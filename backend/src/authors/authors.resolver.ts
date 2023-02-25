@@ -6,7 +6,8 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { PostsService } from 'src/post/models/post.service';
+import mongoose from 'mongoose';
+import { PostsService } from 'src/post/post.service';
 import { AuthorsService } from './authors.service';
 import { Author } from './models/author.model';
 
@@ -18,13 +19,21 @@ export class AuthorsResolver {
   ) {}
 
   @Query((_returns) => Author) // todo: what is this?
-  async author(@Args('id', { type: () => Int }) id: number) {
-    return this.authorsService.findOneById(id);
+  async author(
+    @Args('id', { type: () => String }) id: mongoose.Schema.Types.ObjectId,
+  ) {
+    const data = await this.authorsService.findOneById(id);
+    return data;
   }
 
   @ResolveField()
-  async posts(@Parent() author: Author) {
+  async post(@Parent() author: Author) {
     const { id } = author;
-    return this.postsService.findAll({ authorId: id });
+    const data = await this.authorsService.findAuthorPost(id);
+    if (data) {
+      return data.post;
+    }
+
+    return null;
   }
 }

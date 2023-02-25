@@ -1,9 +1,10 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import mongoose from 'mongoose';
 
 @ObjectType()
 export class Post {
-  @Field((type) => Int)
-  id: number;
+  @Field((type) => String)
+  id: mongoose.Schema.Types.ObjectId;
 
   @Field()
   title: string;
