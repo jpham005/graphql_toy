@@ -18,15 +18,16 @@ services:
 
   backend:
     container_name: backend
-    image: node:19-alpine3.16
+    build:
+      dockerfile: backend.Dockerfile
+      context: ./
     volumes:
       - type: volume
         source: backend-volume
         target: /app
     ports:
       - "3000:3000"
-    working_dir: '/app'
-    entrypoint: npm run start:dev
+    entrypoint: sh /tmp/backend.entry.sh
     networks:
       - net
 
