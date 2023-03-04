@@ -7,6 +7,7 @@ type Author {
   id: String!
   lastName: String
   post: [Post]!
+  test: String!
 }
 
 type Post {

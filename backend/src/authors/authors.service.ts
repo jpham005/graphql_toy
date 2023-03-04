@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { Author, AuthorDocument } from './database/author.database.schema';
@@ -31,7 +31,12 @@ export class AuthorsService {
 
   async findOneById(id: mongoose.Schema.Types.ObjectId) {
     console.log('author ' + id);
-    return await this.authorModel.findById(id).exec();
+    try {
+      return await this.authorModel.findById(id).exec();
+    } catch (e) {
+      console.error(e);
+      throw new UnauthorizedException();
+    }
   }
 
   async findAuthorPost(id: mongoose.Schema.Types.ObjectId) {

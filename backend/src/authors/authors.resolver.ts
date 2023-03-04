@@ -1,11 +1,4 @@
-import {
-  Args,
-  Int,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import mongoose from 'mongoose';
 import { PostsService } from 'src/post/post.service';
 import { AuthorsService } from './authors.service';
@@ -35,5 +28,11 @@ export class AuthorsResolver {
     }
 
     return null;
+  }
+
+  @ResolveField()
+  async test() {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    return 'done';
   }
 }

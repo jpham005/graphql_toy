@@ -1,4 +1,5 @@
 import { YogaDriver, YogaDriverConfig } from '@graphql-yoga/nestjs';
+import { useResponseCache } from '@graphql-yoga/plugin-response-cache';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -13,6 +14,11 @@ import { AuthorsModule } from './authors/authros.module';
       driver: YogaDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
+      plugins: [
+        useResponseCache({
+          session: () => null,
+        }),
+      ],
       // include: [] for limit scan subset module for multiple endpoint.
     }),
   ],

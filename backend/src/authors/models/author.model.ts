@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import mongoose from 'mongoose';
 import { Post } from 'src/post/models/post.model';
 
@@ -15,4 +15,7 @@ export class Author {
 
   @Field((type) => [Post], { nullable: 'items' })
   post: Post[];
+
+  @Field()
+  test: string;
 }
