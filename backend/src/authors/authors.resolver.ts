@@ -1,4 +1,11 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Info,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import mongoose from 'mongoose';
 import { PostsService } from 'src/post/post.service';
 import { AuthorsService } from './authors.service';
@@ -31,7 +38,9 @@ export class AuthorsResolver {
   }
 
   @ResolveField()
-  async test() {
+  async test(@Info() info: any) {
+    info.cacheControl.setCacheHint({ maxAge: 60, scope: 'PUBLIC' });
+    console.log(info);
     await new Promise((resolve) => setTimeout(resolve, 5000));
     return 'done';
   }
